@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(cuid())
+  name           String?
+  email          String?         @unique
+  image String?
+  emailVerified  DateTime?       @map("email_verified")
+  accounts      Account[]
+  sessions      Session[]
+  testsPurchases UserPurchases[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+
+model UserPurchases {
+  id             Int      @id @default(autoincrement())
+  userId         String
+  testId         Int
+  purchasedBy    User     @relation(fields: [userId], references: [id])
+  testPurchased  Test     @relation(fields: [testId], references: [id])
+  purchasedAt    DateTime @default(now())
+
+  @@unique([userId, testId])
+}
+
+model Test {
+  id          Int             @id @default(autoincrement())
+  title       String
+  description String
+  price       Int
+  createdAt   DateTime        @default(now()) @map("created_at")
+  questions   Question[]
+  creatorId   String          @map("user_id")
+  purchases   UserPurchases[]
+
+}
+
+model Question {
+  id                 Int      @id @default(autoincrement())
+  text               String
+  options            Option[]
+  correctOptionId    Int      @map("correct_option_id")
+  userSelectedOption Int?     @map("user_selected_option")
+  testId             Int
+  test               Test     @relation(fields: [testId], references: [id])
+
+}
+
+model Option {
+  id         Int      @id @default(autoincrement())
+  value      String
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+
+}
+
