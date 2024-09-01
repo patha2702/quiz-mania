@@ -34,8 +34,8 @@ const tests: TestCardProps[] = [
 ];
 
 const Dashboard = async () => {
-  const session = await auth()
-  if (!session?.user) redirect("?")
+  // const session = await auth()
+  // if (!session?.user) redirect("?")
   return (
     <section className="p-4">
       <h1 className="text-3xl font-semibold text-black">Dashboard</h1>

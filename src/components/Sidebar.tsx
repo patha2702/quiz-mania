@@ -42,7 +42,7 @@ const Sidebar = () => {
   return (
     <div className={cn("py-4 px-6 flex flex-col justify-between items-start rounded-xl border border-gray-300 bg-slate-100", !isSidebarOpen && "hidden")}>
       <div className="w-full flex flex-col items-start justify-start gap-6">
-        <Link className="text-3xl font-semibold text-black" href="/me">100x Mania</Link>
+        <Link className="text-3xl font-semibold text-black" href="/me">Quiz Mania</Link>
         <nav className="w-full">
           <ul className="w-full flex flex-col justify-start gap-2 items-start">
             {navLinks.map((link) => {
