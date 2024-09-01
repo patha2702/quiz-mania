@@ -4,7 +4,7 @@ const LoginForm = () => {
     return (
         <form action={doSocialLogin}>
             <button 
-                className="bg-pink-400 text-white p-1 rounded-md m-1 text-lg" 
+                className="bg-blue-500 text-white px-4 py-2 rounded-md text-lg" 
                 type="submit" 
                 name="action" 
                 value="google">
